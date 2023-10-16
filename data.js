@@ -7,12 +7,9 @@ function store(e){
     var fname= document.querySelector('#fname').value;
     var lname= document.querySelector('#lname').value;
     
-    const Person={
-        fname,
-        lname,
-    };
+    var Person= (fname+ " "+ lname);
 
-    localStorage.setItem('name', JSON.stringify(Person));
+    localStorage.setItem('name',(Person));
 }
 
 
