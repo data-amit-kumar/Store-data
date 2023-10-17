@@ -6,10 +6,12 @@ function store(e){
     e.preventDefault();
     var fname= document.querySelector('#fname').value;
     var lname= document.querySelector('#lname').value;
+    var email=document.querySelector('#email').value;
     
     const Person={
         fname,
         lname,
+        email,
     };
     if (localStorage.getItem('users') === null) {
         var users = [];
@@ -32,10 +34,17 @@ function showUsers() {
     if (users !== null) {
       users.forEach(function (Person, index) {
         var li = document.createElement('li');
-        li.appendChild(document.createTextNode(Person.fname + '  ' + Person.lname));
+        li.appendChild(document.createTextNode(Person.fname + '  ' + Person.lname + ' - ' + Person.email+'  '));
+        
+        var Edit=document.createElement('button');
+        Edit.appendChild(document.createTextNode('EDIT'));
+        li.appendChild(Edit);
+        Edit.onclick=function(){
+          editUser(index);
+        }
 
         var deleteBtn = document.createElement('button');
-        deleteBtn.appendChild(document.createTextNode('X'));
+        deleteBtn.appendChild(document.createTextNode(' X '));
         deleteBtn.onclick = function () {
           deleteUser(index);
         };
@@ -52,4 +61,22 @@ function showUsers() {
     localStorage.setItem('users', JSON.stringify(users));
     showUsers();
   }
-  showUsers();
+
+  function editUser(index){
+    var users= JSON.parse(localStorage.getItem('users'));
+    var user= users[index];
+
+    var newfname=prompt('Enter new fname', user.fname);
+    var newlname=prompt('Enter new lname',user.lname);
+    var newemail= prompt('Enter new mail', user.email);
+
+    if(newfname && newlname && newemail){
+      user.fname=newfname;
+      user.lname=newlname;
+      user.email=newemail;
+      users[index]=user;
+      localStorage.setItem('users',JSON.stringify(users));
+      showUsers();
+    }
+
+  }
